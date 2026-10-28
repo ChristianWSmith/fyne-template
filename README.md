@@ -65,7 +65,7 @@ make run            # build + run
 make test           # go test -short ./...
 make lint           # golangci-lint (pinned via go run)
 make package        # fyne package -release for the current OS
-make package OS=windows   # cross-package (needs mingw for cgo)
+make package PKGOS=windows # cross-package (needs mingw for cgo)
 make artifact       # package + build the release zip for this OS
 ```
 

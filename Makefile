@@ -24,11 +24,12 @@ fmt:
 vet:
 	go vet ./...
 
-# "make package" packages for the current OS; "make package OS=windows"
+# "make package" packages for the current OS; "make package PKGOS=windows"
 # (or linux/darwin) cross-packages. -release bakes the release icon/metadata.
+# PKGOS, not OS: Windows sets OS=Windows_NT in every process environment.
 package:
 	go install $(FYNE)
-	fyne package -release $(if $(OS),-os $(OS))
+	fyne package -release $(if $(PKGOS),-os $(PKGOS))
 
 # artifact-name prints the release zip the current OS produces. CI uses
 # this for the uploaded artifact name, so naming has a single source.

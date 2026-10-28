@@ -13,7 +13,7 @@ make test           # go test -short ./...   (CI's test command)
 make lint           # golangci-lint via go run, pinned to CI's version
 make fmt            # gofmt -w .
 make vet            # go vet ./...
-make package        # fyne package -release (current OS); OS=linux|windows|darwin to cross
+make package        # fyne package -release (current OS); PKGOS=linux|windows|darwin to cross
 make artifact       # package + produce the release zip for the current OS
 make artifact-name  # print that zip's name (CI uses it for the artifact name)
 ```
