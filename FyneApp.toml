@@ -1,0 +1,6 @@
+[Details]
+  Icon = "icon.png"
+  Name = "fyne-template"
+  ID = "com.christianws.fyne-template"
+  Version = "0.1.0"
+  Build = 1
