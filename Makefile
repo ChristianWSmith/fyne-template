@@ -1,8 +1,6 @@
-APP      := fyne-template
-FYNE     := fyne.io/fyne/v2/cmd/fyne@v2.8.2
-GOLANGCI := github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0
+APP := fyne-template
 
-.PHONY: build run test lint fmt vet package artifact artifact-name clean
+.PHONY: build run test lint fmt vet linux-deps package artifact artifact-name clean
 
 build:
 	go build -o $(APP) .
@@ -13,10 +11,11 @@ run: build
 test:
 	go test -short ./...
 
-# go run keeps contributors off a separate golangci-lint install step; the
-# version pinned here is the one CI runs (lint.yml invokes this target).
+# golangci-lint runs as a go.mod tool: the version lives in go.mod's tool
+# directive, so Dependabot bumps it like any other dependency. CI runs this
+# same target (.github/workflows/lint.yml).
 lint:
-	go run $(GOLANGCI) run ./...
+	go tool golangci-lint run ./...
 
 fmt:
 	gofmt -w .
@@ -24,12 +23,23 @@ fmt:
 vet:
 	go vet ./...
 
+# linux-deps installs the Fyne cgo build dependencies (Linux only). One
+# definition shared by ci.yml and lint.yml.
+linux-deps:
+	sudo apt-get update
+	sudo apt-get install -y \
+		build-essential \
+		libgl1-mesa-dev \
+		xorg-dev \
+		libwayland-dev \
+		libxkbcommon-dev
+
 # "make package" packages for the current OS; "make package PKGOS=windows"
 # (or linux/darwin) cross-packages. -release bakes the release icon/metadata.
 # PKGOS, not OS: Windows sets OS=Windows_NT in every process environment.
+# fyne runs as a go.mod tool (fyne.io/tools) — Dependabot keeps it current.
 package:
-	go install $(FYNE)
-	fyne package -release $(if $(PKGOS),-os $(PKGOS))
+	go tool fyne package -release $(if $(PKGOS),-os $(PKGOS))
 
 # artifact-name prints the release zip the current OS produces. CI uses
 # this for the uploaded artifact name, so naming has a single source.

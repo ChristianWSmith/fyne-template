@@ -11,24 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
 
       # golangci-lint typechecks, and Fyne's cgo packages need the GL/X
       # headers to load — same deps the build workflow installs.
-      - name: Install System Dependencies (Linux)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            libgl1-mesa-dev \
-            xorg-dev \
-            libwayland-dev \
-            libxkbcommon-dev
+      - name: Install Fyne Build Dependencies (Linux)
+        run: make linux-deps
 
       - name: Lint
         run: make lint

@@ -10,7 +10,7 @@ in-app auto-updater.
 make build          # go build -o fyne-template .
 make run            # build + run
 make test           # go test -short ./...   (CI's test command)
-make lint           # golangci-lint via go run, pinned to CI's version
+make lint           # golangci-lint via go tool; version lives in go.mod
 make fmt            # gofmt -w .
 make vet            # go vet ./...
 make package        # fyne package -release (current OS); PKGOS=linux|windows|darwin to cross
@@ -69,6 +69,10 @@ Flat single-package layout; everything is `package main` in the repo root:
   to app close.
 - **version.go stays stamp-only.** The CI stamp step replaces the file
   wholesale.
+- **`make package` rewrites `FyneApp.toml`** — the fyne CLI re-serializes
+  the file and increments `Build` on every run. Local-only noise (CI's
+  copy is ephemeral); discard with `git checkout -- FyneApp.toml` when
+  you don't want the bump committed.
 
 ## Renaming the template
 

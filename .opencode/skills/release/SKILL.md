@@ -33,7 +33,7 @@ exactly one 3-OS run).
    patch what's stale or missing.
 3. **Run the gate, all must pass:**
    ```sh
-   make lint     # golangci-lint via go run (pinned in the Makefile)
+   make lint     # golangci-lint via go tool (version pinned in go.mod)
    make vet
    make test     # go test -short ./...
    ```
@@ -112,7 +112,7 @@ tag, and the release must all sit on this exact commit.
    commit on main, push, and re-dispatch with the *same* version (no tag
    exists yet, so the version is still free).
 6. **Verify the artifacts** before continuing (don't use
-   `gh run view --json artifacts` — gh 2.102.1 rejects that field; the
+   `gh run view --json artifacts` — some gh versions reject that field; the
    REST API works):
    ```sh
    gh api "repos/{owner}/{repo}/actions/runs/<RUN_ID>/artifacts" \
@@ -220,7 +220,7 @@ see the new tag on their next launch.
 - `gh run watch` without `--exit-status` exits 0 even on failure —
   always pass it, or a failed build silently becomes a "successful"
   wait.
-- **gh CLI quirks (seen on 2.102.1):** `gh run view --json artifacts`
+- **gh CLI quirks:** `gh run view --json artifacts`
   errors ("Unknown JSON field") — list artifacts via
   `gh api .../runs/<ID>/artifacts` instead. Same for
   `gh release view --json isLatest` ("Unknown JSON field") — verify
@@ -240,10 +240,6 @@ see the new tag on their next launch.
 - `gh release create --target` rejects short SHAs (HTTP 422
   "target_commitish is invalid") — always pass the full
   `git rev-parse <SHA>` output, never the abbreviated form.
-- `fyne package` prints a deprecation notice pointing at
-  `fyne.io/tools/cmd/fyne`; the pinned
-  `fyne.io/fyne/v2/cmd/fyne@v2.8.2` still works — don't chase the
-  migration mid-release.
 - This skill commits, pushes, dispatches, tags, and publishes by design,
   but only after the user confirms the commit + version in Phase 2 — and
   publishes only after the Phase 4 confirmation. Nothing public happens

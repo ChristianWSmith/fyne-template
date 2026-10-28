@@ -63,7 +63,7 @@ release assets and binaries named after it.
 make build          # go build → ./fyne-template
 make run            # build + run
 make test           # go test -short ./...
-make lint           # golangci-lint (pinned via go run)
+make lint           # golangci-lint (version pinned in go.mod)
 make package        # fyne package -release for the current OS
 make package PKGOS=windows # cross-package (needs mingw for cgo)
 make artifact       # package + build the release zip for this OS
