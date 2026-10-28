@@ -167,17 +167,22 @@ make lint
 make vet
 make test
 make build
+make clean        # the build just produced a binary whose embedded source
+                  # paths can still contain the old directory name — don't
+                  # let it pollute the grep pass below
 ```
 
 Then confirm no identity or skill references survive anywhere:
 
 ```sh
 grep -rn "fyne-template\|ChristianWSmith" --exclude-dir=.git --exclude-dir=branding .
-grep -rni "branding" --exclude-dir=.git --exclude-dir=branding .
+grep -rn "skills/branding" --exclude-dir=.git --exclude-dir=branding .
 ```
 
 Both must print nothing. (`LICENSE` says "Christian Smith" — that's the
-license holder, not an identity token; it stays.)
+license holder, not an identity token; it stays. Ordinary prose uses of
+the word "branding" — e.g. in an app description — are fine; what must
+not survive is any reference to *this skill*.)
 
 If `grep` still hits, the rename missed a spot — find it, fix it, re-run
 the full gate. Do not proceed with a known leftover.

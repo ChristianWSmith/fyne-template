@@ -237,6 +237,13 @@ see the new tag on their next launch.
 - **A failed run costs nothing but time:** no tag exists until the
   build is green, so fix forward and re-dispatch the *same* version.
   Never move or delete a published tag.
+- `gh release create --target` rejects short SHAs (HTTP 422
+  "target_commitish is invalid") — always pass the full
+  `git rev-parse <SHA>` output, never the abbreviated form.
+- `fyne package` prints a deprecation notice pointing at
+  `fyne.io/tools/cmd/fyne`; the pinned
+  `fyne.io/fyne/v2/cmd/fyne@v2.8.2` still works — don't chase the
+  migration mid-release.
 - This skill commits, pushes, dispatches, tags, and publishes by design,
   but only after the user confirms the commit + version in Phase 2 — and
   publishes only after the Phase 4 confirmation. Nothing public happens
