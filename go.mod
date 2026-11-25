@@ -2,7 +2,7 @@ module github.com/ChristianWSmith/fyne-template
 
 go 1.27.2
 
-require fyne.io/fyne/v2 v2.8.2
+require fyne.io/fyne/v2 v2.8.3
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.4.0 // indirect
